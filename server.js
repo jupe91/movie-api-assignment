@@ -1,31 +1,7 @@
 import express from 'express';
-import pg from 'pg';
-import dotenv from 'dotenv';
+import { client } from './client.js';
 
-dotenv.config();
 
-const {Client} = pg;
-
-const client = new Client({
-    user: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    database: process.env.DB_DATABASE,
-});
-
-connectDB();
-
-async function connectDB() {
-
-    try{
-        await client.connect();
-        console.log('Database connected!');
-    }catch(err){
-        console.log(err);
-    }
-    
-}
 const app = express();
 app.use(express.json());
 
@@ -40,7 +16,24 @@ app.post('/movies', (req, res) => {
 })
 
 app.get('/movies/:id', (req, res) => {
-    res.send(`Get details of movie with ID: ${req.params.id}`);  //Send movie ID from URL params
+    res.json({
+        id: req.params.id,
+        name: "Pekka ja Pätkä",
+        year: 1900,
+        genre: "action",
+        reviews: [
+            {
+                username: "meikalainen",
+                stars: 4,
+                reviewText: "aivan fantastinen pläjäys"
+            },
+            {
+                username: "sika",
+                stars: 2,
+                reviewText: "mukava leffa"
+            }
+        ]
+    });  //Send movie ID from URL params
   });
   
 app.delete('/movies/:id', (req, res) => {
@@ -66,16 +59,12 @@ app.post('/users/:username/favorites', (req, res) => {
 });
 
 app.get('/users/:username/favorites', (req, res) => {
-    res.send(`Get favorite movies of user: ${req.params.username}`);  //Get favorite movies for user
+    res.send(`Get favorite movies of user: ${req.params.username}`);  //Get favorite movies for user----------
 });
 
 //Reviews
 app.post('/reviews', (req, res) => {
     res.send(`Add a review for a movie: `);  //Placeholder response for adding a review, ${req.body.}
-});
-
-app.get('/movies/:id/reviews', (req, res) => {
-    res.send(`Get reviews for movie with ID: ${req.params.id}`);  //Get reviews for movie by ID
 });
 
 
