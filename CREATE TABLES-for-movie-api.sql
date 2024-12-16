@@ -26,15 +26,14 @@ CREATE TABLE review (
     stars INT NOT NULL,
     review_text TEXT,
     FOREIGN KEY (profile_id) REFERENCES profile(id),
-    FOREIGN KEY (movie_id) REFERENCES movie(id)
+    FOREIGN KEY (movie_id) REFERENCES movie(id) ON DELETE CASCADE
 );
-
 CREATE TABLE favorite (
     id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     profile_id INT NOT NULL,
     movie_id INT NOT NULL,
     FOREIGN KEY (profile_id) REFERENCES profile(id),
-    FOREIGN KEY (movie_id) REFERENCES movie(id)
+    FOREIGN KEY (movie_id) REFERENCES movie(id) ON DELETE CASCADE
 );
 
 --Inserting some data to test the connections

@@ -2,8 +2,8 @@ import pg from "pg";
 import dotenv from 'dotenv';
 
 dotenv.config();
-
 const { Client } = pg;
+
 
 export const client = new Client({
     user: process.env.DB_USERNAME,
@@ -13,14 +13,16 @@ export const client = new Client({
     database: process.env.DB_DATABASE,
 });
 
-connectDB();
-
+// Connect to the database
 async function connectDB() {
-
-    try{
+    try {
         await client.connect();
         console.log('Database connected!');
-    }catch(err){
-        console.log(err);
+    } catch (err) {
+        console.error('Error connecting to database:', err);
     }
 }
+
+connectDB();
+
+export default client;
